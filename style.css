@@ -1,0 +1,167 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Roboto+Mono:wght@300;400;700&family=Roboto:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap");
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+ul,
+ol {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+:root {
+    --background-slate-dark: #334155;
+    --background-slate-medium: #64748b;
+    --background-slate-light: #94a3b8;
+
+    --font-zinc-light: #d4d4d8;
+    --font-zinc-dark: #09090b;
+
+    --font-1: "Roboto", sans-serif;
+    --font-2: "Open Sans", sans-serif;
+    --transition: all 0.25s ease-in-out;
+    --border-radius: 6px;
+    --letter-spacing: 4px;
+    --section-padding: 8px 16px;
+}
+
+button {
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 700;
+    letter-spacing: var(--letter-spacing);
+    font-family: var(--font-1), var(--font-2);
+}
+
+html,
+body {
+    /* Ensures html and body take up full height of viewport */
+    font-family: var(--font-1), var(--font-2);
+}
+
+#project-container {
+    /* Ensures our content section always has a minimum height of the viewport height, since 
+	the body and html has height 100% */
+    min-height: 100vh;
+
+    /* Makes our page a stacked flexbox */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Stylings for the header */
+#project-header {
+    display: flex;
+    align-items: center;
+    background-color: var(--background-slate-medium);
+    color: var(--font-zinc-light);
+    font-size: 20px;
+    padding: var(--section-padding);
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    column-gap: 16px;
+    flex-basis: 20%;
+}
+
+/*Header search section styling*/
+.search-bar-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-basis: 30%;
+}
+.header-search-bar {
+    height: 40px;
+    padding: 10px 12px;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border: none;
+}
+.search-button {
+    height: 40px;
+    padding: 0 4px;
+    font-size: inherit;
+    color: inherit;
+    background-color: transparent;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border: 2px solid var(--background-slate-dark);
+}
+.search-button:hover {
+    background-color: var(--background-slate-light);
+    border-color: aliceblue;
+    color: var(--font-zinc-dark);
+}
+.search-icon {
+    height: 100%;
+}
+
+/*Header nav stylings*/
+.header-nav {
+    /* Make it take the remaining space */
+    flex-grow: 1;
+}
+.nav-links-section {
+    display: flex;
+    justify-content: space-evenly;
+}
+.header-nav .nav-item {
+    padding: 6px 12px;
+    border: 2px solid var(--background-slate-medium);
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+
+/* Create hover effect for nav-items that don't have data-active */
+.header-nav .nav-item:not([data-active="true"]):hover {
+    border: 2px solid var(--background-slate-dark);
+}
+
+.header-nav .nav-item[data-active="true"] {
+    background-color: var(--background-slate-dark);
+}
+
+/* BOOK MARK: Style main content section
+*/
+#project-main-content {
+    border: 2px solid black;
+    padding: var(--section-padding);
+    /* Make it so the this section takes the rest of the page */
+    flex-grow: 1;
+}
+
+.image-carousel {
+    border: 4px solid green;
+}
+
+#project-main-content img {
+    height: 200px;
+    width: 300px;
+}
+
+#main-content-header {
+    text-align: center;
+}
+
+/* Footer styling */
+#project-footer {
+    color: var(--font-zinc-light);
+    background-color: var(--background-slate-medium);
+    margin-top: auto;
+    padding: var(--section-padding);
+    text-align: center;
+}
+#footer-main-message {
+    margin: 4px;
+}

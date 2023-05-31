@@ -1,0 +1,1 @@
+// File where we create the main elements of the page
