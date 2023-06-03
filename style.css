@@ -8,22 +8,34 @@
     box-sizing: border-box;
 }
 
+/* Accessibility */
+a:focus,
+button:focus,
+.nav-item:focus {
+    outline: 2px solid #007bff; /* Blue outline */
+}
+
 ul,
 ol {
     list-style: none;
 }
-
 a {
     text-decoration: none;
 }
-
 :root {
     --background-slate-dark: #334155;
     --background-slate-medium: #64748b;
     --background-slate-light: #94a3b8;
 
+    --background-sky-dark: #0369a1;
+    --background-sky-medium: #0ea5e9;
+    --background-sky-light: #7dd3fc;
+    --background-sky-ultra-light: #e0f2fe;
+
     --font-zinc-light: #d4d4d8;
     --font-zinc-dark: #09090b;
+    --font-blue-light: #93c5fd;
+    --font-blue-dark: #172554;
 
     --font-1: "Roboto", sans-serif;
     --font-2: "Open Sans", sans-serif;
@@ -39,6 +51,8 @@ button {
     font-weight: 700;
     letter-spacing: var(--letter-spacing);
     font-family: var(--font-1), var(--font-2);
+    font-size: inherit;
+    color: inherit;
 }
 
 html,
@@ -47,19 +61,30 @@ body {
     font-family: var(--font-1), var(--font-2);
 }
 
+.content-hidden {
+    display: none !important;
+}
+.drop-down-hidden {
+    height: 0;
+}
+
 #project-container {
     /* Ensures our content section always has a minimum height of the viewport height, since 
 	the body and html has height 100% */
     min-height: 100vh;
-
     /* Makes our page a stacked flexbox */
     display: flex;
     flex-direction: column;
 }
 
+#project-header,
+.logo-container,
+.search-bar-container {
+    display: flex;
+}
+
 /* Stylings for the header */
 #project-header {
-    display: flex;
     align-items: center;
     background-color: var(--background-slate-medium);
     color: var(--font-zinc-light);
@@ -68,7 +93,6 @@ body {
 }
 
 .logo-container {
-    display: flex;
     align-items: center;
     column-gap: 16px;
     flex-basis: 20%;
@@ -76,7 +100,6 @@ body {
 
 /*Header search section styling*/
 .search-bar-container {
-    display: flex;
     align-items: center;
     justify-content: center;
     flex-basis: 30%;
@@ -91,16 +114,13 @@ body {
 .search-button {
     height: 40px;
     padding: 0 4px;
-    font-size: inherit;
-    color: inherit;
+
     background-color: transparent;
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
     border: 2px solid var(--background-slate-dark);
 }
 .search-button:hover {
-    background-color: var(--background-slate-light);
-    border-color: aliceblue;
     color: var(--font-zinc-dark);
 }
 .search-icon {
@@ -112,15 +132,25 @@ body {
     /* Make it take the remaining space */
     flex-grow: 1;
 }
-.nav-links-section {
+
+.nav-items-list {
     display: flex;
     justify-content: space-evenly;
+    /* Do overflow hidden so that the nav-items are hidden when you collapse the list */
+    overflow: hidden;
+    transition: var(--transition);
 }
-.header-nav .nav-item {
+.header-nav .nav-item,
+#toggle-drop-down-btn {
     padding: 6px 12px;
     border: 2px solid var(--background-slate-medium);
     border-radius: var(--border-radius);
     transition: var(--transition);
+    background-color: transparent;
+}
+
+#toggle-drop-down-btn {
+    border: 2px solid var(--background-slate-light);
 }
 
 /* Create hover effect for nav-items that don't have data-active */
@@ -132,26 +162,104 @@ body {
     background-color: var(--background-slate-dark);
 }
 
-/* BOOK MARK: Style main content section
-*/
+/* Make sure that the children elements of the nav-items themselves don't receive any pointer events. Only the 
+nav-item list tags themselves should get the events */
+.header-nav .nav-item > * {
+    pointer-events: none;
+}
+
 #project-main-content {
-    border: 2px solid black;
-    padding: var(--section-padding);
     /* Make it so the this section takes the rest of the page */
     flex-grow: 1;
+    background-color: var(--background-slate-light);
+    color: var(--font-zin-dark);
+    padding: var(--section-padding);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
-.image-carousel {
-    border: 4px solid green;
-}
-
-#project-main-content img {
-    height: 200px;
-    width: 300px;
-}
-
-#main-content-header {
+/* Styling for empty tab section */
+.empty-tab-section {
+    color: var(--font-zinc-dark);
     text-align: center;
+}
+
+/* Styling for the image carousel section */
+
+/* Outer container that hides the slides */
+.slides-outer-container {
+    width: 550px;
+    height: 300px;
+    margin: 0 auto;
+    border: 2px solid black;
+    overflow: hidden;
+}
+
+/* Ensure everything is using its full width */
+.slides-inner-container,
+.slides-inner-container .slide,
+.slides-inner-container img {
+    width: 100%;
+    height: 100%;
+}
+
+/* Inner container that moves the slides */
+.slides-inner-container {
+    position: relative;
+    transition: var(--transition);
+}
+.slides-inner-container .slide {
+    /* Style the slides and then the images for the slide so it fits the set width and height of .image-carousel */
+    position: absolute;
+}
+
+.carousel-btns-container,
+.main-carousel-btns-container,
+.secondary-carousel-btns-container {
+    display: flex;
+    justify-content: center;
+}
+
+.carousel-btns-container {
+    margin-top: 24px;
+    row-gap: 16px;
+    flex-direction: column;
+}
+.carousel-btns-container button {
+    background: transparent;
+    border-style: solid;
+    padding: 6px 18px;
+}
+.carousel-btns-container button:hover {
+    background-color: var(--font-zinc-dark);
+    color: var(--background-slate-light);
+}
+
+.carousel-btns-container img {
+    /* Style the icon images */
+    width: 30px;
+    height: 30px;
+}
+.main-carousel-btns-container {
+    column-gap: 24px;
+}
+.secondary-carousel-btns-container {
+    column-gap: 12px;
+}
+
+.slide-dot {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--background-slate-dark);
+    border-radius: 50%;
+    transition: var(--transition);
+}
+.slide-dot:hover {
+    background-color: var(--background-slate-dark);
+}
+.slide-dot[data-active="true"] {
+    background-color: var(--background-slate-dark);
 }
 
 /* Footer styling */
@@ -164,4 +272,30 @@ body {
 }
 #footer-main-message {
     margin: 4px;
+}
+
+/* Media queries and stylings for elements on smaller screens  */
+
+#toggle-drop-down-btn[data-active="true"] {
+    color: white;
+    background-color: var(--background-slate-dark);
+}
+
+@media (max-width: 1100px) {
+    /* Header styles for smaller header and menu */
+    #project-header {
+        flex-direction: column;
+        row-gap: 12px;
+    }
+
+    .header-nav {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        row-gap: 12px;
+    }
+
+    .nav-items-list {
+        flex-direction: column;
+    }
 }
